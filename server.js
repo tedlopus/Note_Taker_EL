@@ -1,5 +1,6 @@
 const express = require('express');
-const api = require('./routes/index.js');
+const api = require('./routes/api');
+const html = require('./routes/html');
 
 const PORT = process.env.port || 3001;
 
@@ -10,9 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-app.use('/api/notes', api);
-app.use('/html', html);
+app.use('/api', api);
+app.use('/', html);
 
 app.listen(PORT, () =>
-    console.log(`App listening on port ${PORT}`)
+    console.log(`App listening on port http://localhost:${PORT}`)
 );
