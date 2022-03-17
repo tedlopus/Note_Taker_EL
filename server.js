@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const { clog } = require('./middleware/clog');
 const api = require('./routes/index.js');
 
@@ -11,6 +10,12 @@ app.use(clog);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/api', api);
 
 app.use(express.static('public'));
+
+app.use('/api/notes', api);
+app.use('/html', html);
+
+app.listen(PORT, () =>
+    console.log(`App listening on port ${PORT}`)
+);
