@@ -1,8 +1,8 @@
 const apiRouter = require('express').Router();
-const { readAndAppend } = require('../helpers/fsUtils');
+const { readAndAppend, readFromFile } = require('../helpers/fsUtils');
 
 apiRouter.get('/notes', (req, res) => 
-    fs.readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
     );      
 
 apiRouter.post('/notes', (req, res) => {
