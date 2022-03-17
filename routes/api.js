@@ -1,27 +1,23 @@
-const fs = require('fs');
 const apiRouter = require('express').Router();
+const { readAndAppend } = require('../helpers/fsUtils');
 
-apiRouter.get('/notes', (req, res) => {
-    fs.readFile('./db/db.json', (err, data) => {
-        if (err) throw err;
-        res.json(JSON.parse(data));
-    });      
-});
+apiRouter.get('/notes', (req, res) => 
+    fs.readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
+    );      
 
 apiRouter.post('/notes', (req, res) => {
-    fs.readFile('./db/db.json', (err, data) => {
-        if (err) throw err;
-        
-        let newNote = req.body;
-        res.json(JSON.parse(data));
-        data.push(newNote);
+    const { title, text } = req.body;
 
-        fs.writeFile('./db/db.json', JSON.stringify(data), (err) => {
-        if (err) throw err;
-        });
-
-        res.end();
-    });      
-})
+    if (req.body) {
+        const newNote = {
+            title,
+            text
+        };
+        readAndAppend(newNote, './db/db.json');
+        res.json('New note added.');
+    } else {
+      res.json('Unable to add new note.');
+    }
+});
 
 module.exports = apiRouter;
